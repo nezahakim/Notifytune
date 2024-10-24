@@ -21,7 +21,7 @@ const FloatingNavigation: React.FC = () => {
 
   const navItems = [
     { icon: <Home size={24} />, label: 'Home', path: '/home' },
-    { icon: <Mic size={24} />, label: 'Explore Live', path: '/explore-live' },
+    { icon: <Mic size={24} />, label: 'Explore Live', path: '/explore' },
     { icon: <User size={24} />, label: 'Profile', path: '/profile' },
   ];
 

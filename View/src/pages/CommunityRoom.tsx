@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 // import { Mic, Users, Plus, Minus, Send, Gift, Gamepad, Search } from 'lucide-react';
-import LiveHeader from './LiveRoom/LiveHeader';
-import LiveChat from './LiveRoom/LiveChat';
-import LiveChatSendText from './LiveRoom/LiveChatSendText';
-import LiveSpeakers from './LiveRoom/LiveSpeakers';
+import LiveHeader from './CommunityRoom/CommunityHeader';
+import LiveChat from './CommunityRoom/CommunityChat';
+import LiveChatSendText from './CommunityRoom/ChatSendText';
 
-interface LiveStreamLayoutProps {
-  minimize: () => void;
-}
 
-const LiveStreamLayout: React.FC<LiveStreamLayoutProps> = ({ minimize }) => {
+
+const CommunityRoom: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -22,7 +19,7 @@ const LiveStreamLayout: React.FC<LiveStreamLayoutProps> = ({ minimize }) => {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-white dark:bg-gray-900 overflow-hidden z-50">
-      <LiveHeader minimize={minimize} isScrolled={isScrolled} />
+      <LiveHeader isScrolled={isScrolled} />
 
       <div className="flex-1 flex overflow-hidden mt-0 relative z-9">
         <div className="flex-1 flex flex-col">
@@ -30,13 +27,6 @@ const LiveStreamLayout: React.FC<LiveStreamLayoutProps> = ({ minimize }) => {
             <div className="flex-grow flex flex-col overflow-hidden">
               <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
                 <LiveChat />
-              </div>
-            </div>
-
-            <div className=" border-l border-gray-200 dark:border-gray-700 flex flex-col">
-              <div className="flex-grow"></div>
-              <div className=" overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
-                <LiveSpeakers />
               </div>
             </div>
           </div>
@@ -50,4 +40,4 @@ const LiveStreamLayout: React.FC<LiveStreamLayoutProps> = ({ minimize }) => {
   );
 };
 
-export default LiveStreamLayout;
+export default CommunityRoom;

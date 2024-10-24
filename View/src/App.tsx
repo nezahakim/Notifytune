@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, To, useLocation, useNavigate } from 'react-router-dom';
 import ChatHome from './pages/Home';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
@@ -7,24 +7,35 @@ import ExploreLiveRooms from './pages/ExploreLiveRooms';
 import FloatingNavigation from './components/Navigation';
 import ChatRoom from './pages/ChatRoom';
 import StartPage from './pages/Start';
-import LiveStreamLayout from './pages/LiveStreamLayout';
-import GravityAudioRoom from './pages/LiveRoomPage';
+import LiveStream from './pages/LiveStream';
+import CommunityRoom from './pages/CommunityRoom';
 
 const AppContent: React.FC = () => {
+  const navigate = useNavigate()
   const location = useLocation();
-  const showFloatingNav = !['/c', '/live', '/room', '/'].includes(location.pathname);
-
+ 
+  const showFloatingNav = !['/c', '/room', '/'].includes(location.pathname);
+  const minimize = (text: any) => {
+    
+    if(text=='back') {
+      navigate('/')
+    }
+    
+  }
   return (
     <div className="flex flex-col h-screen bg-white dark:bg-gray-900 max-w-2xl mx-auto">
+      
       <Routes>
         <Route path='/' element={<StartPage />} />
         <Route path='/home' element={<ChatHome />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/settings' element={<Settings />} />
-        <Route path='/c' element={<ChatRoom />} />
-        <Route path='/explore-live' element={<ExploreLiveRooms />} />
-        <Route path='/live' element={<GravityAudioRoom />} />
-        <Route path="/room" element={<LiveStreamLayout />} />
+        <Route path='/c/:chatId' element={<ChatRoom />} />
+        <Route path='/co' element={<CommunityRoom />} />
+        <Route path='/explore' element={<ExploreLiveRooms />} />
+        <Route path="/room/:roomId" element={<LiveStream minimize={function (): void {
+          throw new Error('Function not implemented.');
+        } } />} />
       </Routes>
       {showFloatingNav && <FloatingNavigation />}
     </div>

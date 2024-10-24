@@ -37,6 +37,19 @@ export interface LiveRoom {
   isLive: boolean;
   thumbnail: string;
 }
+export interface LiveRoom {
+  id: number;
+  title: string;
+  host: string;
+  participants: number;
+  tags: string[];
+  isLive: boolean;
+  thumbnail: string;
+  description?: string;
+  maxParticipants?: number;
+  rules?: string;
+}
+
 
 export interface User{
   id: number,

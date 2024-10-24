@@ -1,10 +1,15 @@
-import { logger } from '../utils/logger.js';
+import logger from '../utils/logger.js'
 
-export const errorHandler = (err, req, res, next) => {
-  logger.error(err.stack);
+import dotenv from 'dotenv'
+dotenv.config()
 
-  res.status(500).json({
-    message: 'An unexpected error occurred',
-    error: process.env.NODE_ENV === 'production' ? {} : err
-  });
-};
+const errorHandler = (err, req, res, next) =>{
+    logger.err(err.stack)
+
+    res.status(500).json({
+        message:" Unexpected Error",
+        error: process.env.NODE_ENV === 'production' ? {} : err
+    })
+}
+
+export default errorHandler;

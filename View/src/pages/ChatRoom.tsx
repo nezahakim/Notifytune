@@ -1,16 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useParams,useNavigate } from 'react-router-dom';
 import { Send, Paperclip, Mic, Smile, MoreVertical, ArrowLeft, Phone, Video } from 'lucide-react';
 import { ChatFace, Message } from '../components/types';
 
-interface ChatRoomProps {
-  chat: ChatFace;
-  onBack: () => void;
-}
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ chat, onBack }) => {
+const ChatRoom: React.FC = () => {
+  const [chat, setChat] = useState<ChatFace>()
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const { chatId } = useParams()
+  console.log(chatId)
+
+  const navigate =  useNavigate()
 
   useEffect(() => {
     scrollToBottom();
@@ -27,6 +30,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ chat, onBack }) => {
     }
   };
 
+  const onBack = () =>{
+    navigate('/home')
+  }
+  
   return (
     <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
       <header className="bg-white dark:bg-gray-800 shadow-md z-10">
@@ -52,9 +59,9 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ chat, onBack }) => {
             <button className="text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full">
               <Phone size={24} />
             </button>
-            <button className="text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full">
+            {/* <button className="text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full">
               <Video size={24} />
-            </button>
+            </button> */}
             <button className="text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full">
               <MoreVertical size={24} />
             </button>
@@ -78,9 +85,9 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ chat, onBack }) => {
 
       <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-3">
         <div className="flex items-center space-x-2">
-          <button className="text-gray-500 hover:text-blue-500">
+          {/* <button className="text-gray-500 hover:text-blue-500">
             <Paperclip size={24} />
-          </button>
+          </button> */}
           <input
             type="text"
             value={message}

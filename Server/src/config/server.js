@@ -2,7 +2,7 @@ import express from 'express'
 import http from 'http'
 import cors from 'cors'
 import socketIO from 'socket.io'
-import { errorHandler } from '../middleware/errorHandler'
+import { errorHandler } from '../middleware/errorHandler.js'
 
 
 const createServer = (app) =>{

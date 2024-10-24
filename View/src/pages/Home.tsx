@@ -3,6 +3,7 @@ import { Edit, MoreVertical, Search, X,MoveUp, MoveDown } from 'lucide-react';
 import MinTabs from '../components/MinTabs';
 import ChatItem from '../components/ChatItem';
 import { ChatFace } from '../components/types';
+import { useNavigate } from 'react-router-dom';
 
 const ChatHome: React.FC = () => {
   const [chats, setChats] = useState<ChatFace[]>([
@@ -12,6 +13,8 @@ const ChatHome: React.FC = () => {
     { id: 4, name: "Charlie Brown", lastMessage: "How's the project going?", time: "Tuesday", unread: 0, online: true, avatar: "👦", pinned: false, muted: false, group: false },
     { id: 5, name: "Diana Prince", lastMessage: "Sent a photo", time: "Monday", unread: 1, online: false, avatar: "👸", pinned: false, muted: false, group: false },
   ]);
+
+  const navigate = useNavigate()
 
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -53,7 +56,8 @@ const ChatHome: React.FC = () => {
   };
 
   const handleChatItemClick = (chatId: number) => {
-    console.log(`Chat item clicked: ${chatId}`);
+    // console.log(`Chat item clicked: ${chatId}`);
+    navigate('/c/' + chatId);
   };
 
   const handleNewChat = () => {

@@ -1,12 +1,18 @@
 import React from 'react';
 import { Mic, Users, MinusCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface LiveHeaderProps {
-  minimize: () => void;
   isScrolled: boolean;
 }
 
-const LiveHeader: React.FC<LiveHeaderProps> = ({ minimize, isScrolled }) => {
+const LiveHeader: React.FC<LiveHeaderProps> = ({isScrolled }) => {
+
+    const navigate = useNavigate()
+    const onBack = () => {
+        navigate('/home')
+    }
+
   return (
     <header className={`border-gray-200 border-b-2 bg-gradient-to-r sticky top-0 z-10 bg-white dark:bg-gray-900 transition-shadow duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
       <div className="flex justify-between items-center px-4 py-3">
@@ -19,7 +25,7 @@ const LiveHeader: React.FC<LiveHeaderProps> = ({ minimize, isScrolled }) => {
           </div>
           <div className="flex items-center mt-2">
             <div className="flex -space-x-2">
-              {[1, 2, 3, 4, 5].map((i) => (
+              {[1, 2, 3, 4].map((i) => (
                 <img
                   key={i}
                   src={`/vite.svg`}
@@ -33,7 +39,7 @@ const LiveHeader: React.FC<LiveHeaderProps> = ({ minimize, isScrolled }) => {
               20
             </div>
             <span className="text-gray-600 dark:text-gray-300 text-sm font-medium ml-2">
-              listening...
+              online...
             </span>
           </div>
         </div>
@@ -43,7 +49,7 @@ const LiveHeader: React.FC<LiveHeaderProps> = ({ minimize, isScrolled }) => {
           </button>
           <button
             className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition duration-300"
-            onClick={minimize}
+            onClick={onBack}
           >
             <MinusCircle size={24} />
           </button>
