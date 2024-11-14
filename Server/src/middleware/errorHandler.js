@@ -3,7 +3,7 @@ import logger from '../utils/logger.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const errorHandler = (err, req, res, next) =>{
+export const errorHandler = (err, req, res, next) =>{
     logger.err(err.stack)
 
     res.status(500).json({
@@ -11,5 +11,3 @@ const errorHandler = (err, req, res, next) =>{
         error: process.env.NODE_ENV === 'production' ? {} : err
     })
 }
-
-export default errorHandler;

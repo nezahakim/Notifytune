@@ -64,7 +64,7 @@ export const register = async (req, res) => {
         });
 
     } catch (error) {
-        logger.error("Error occurred during registration:", error.message);
+        logger.error("Error occurred during registration:", error);
         return res.status(500).json({ message: "Something went wrong, please try again later!" });
     }
 };
@@ -72,21 +72,21 @@ export const register = async (req, res) => {
 
 export const login = async (req, res)=>{
     const {
-        usernameOrEmail,
+        username,
         password,
     } =  req.body
 
     try{
         const user = await User.findOne({
-            $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
+            $or: [{ username: username }, { email: username }]
         });
         if (!user) {
-            return res.status(400).json({ message: " Invalid username/email " });
+            return res.json({ status: false, message: " Invalid username/email " });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(400).json({ message: "Invalid username/email or password" });
+            return res.json({ status: false,message: "Invalid username/email or password" });
         }
 
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -94,6 +94,7 @@ export const login = async (req, res)=>{
         });
 
         res.status(201).json({
+            status: true,
             message:"Login Successful",
             user:{
                 userId: user._id,
