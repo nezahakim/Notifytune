@@ -19,10 +19,12 @@ const FloatingNavigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const user_id = localStorage.getItem('user_id')
+
   const navItems = [
     { icon: <Home size={24} />, label: 'Home', path: '/home' },
     { icon: <Mic size={24} />, label: 'Explore Live', path: '/explore' },
-    { icon: <User size={24} />, label: 'Profile', path: '/profile' },
+    { icon: <User size={24} />, label: 'Profile', path: '/profile/'+user_id },
   ];
 
   return (

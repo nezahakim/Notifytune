@@ -1,21 +1,6 @@
-// export interface ChatFace {
-//     id: number;
-//     name: string;
-//     lastMessage: string;
-//     time: string;
-//     unread: number;
-//     online: boolean;
-//     avatar: string;
-//     pinned: boolean;
-//     muted: boolean;
-//     group: boolean;
-//     archived?: boolean;
-//   }
-
-  // types.ts
-
 export interface ChatFace {
-  id: number;
+  chatId: number;
+  id: any;
   name: string;
   lastMessage: string;
   time: string;
@@ -80,10 +65,10 @@ export interface Participant {
 }
 
 export interface Message {
-  id: number;
-  sender: string;
-  content: string;
-  timestamp: Date;
+  _id: number;
+  userId: any;
+  message: string;
+  createdAt: any;
   isGlobal: boolean;
 }
 

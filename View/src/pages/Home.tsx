@@ -4,15 +4,30 @@ import MinTabs from '../components/MinTabs';
 import ChatItem from '../components/ChatItem';
 import { ChatFace } from '../components/types';
 import { useNavigate } from 'react-router-dom';
+import Api from '../services/Api';
 
 const ChatHome: React.FC = () => {
   const [chats, setChats] = useState<ChatFace[]>([
-    { id: 1, name: "Alice Smith", lastMessage: "See you tomorrow!", time: "10:30 AM", unread: 2, online: true, avatar: "👩‍🦰", pinned: true, muted: false, group: false },
-    { id: 2, name: "Bob Johnson", lastMessage: "Thanks for the info!", time: "Yesterday", unread: 0, online: false, avatar: "👨‍🦲", pinned: false, muted: true, group: false },
-    { id: 3, name: "Work Group", lastMessage: "Meeting at 3 PM", time: "Yesterday", unread: 5, online: true, avatar: "👥", pinned: true, muted: false, group: true },
-    { id: 4, name: "Charlie Brown", lastMessage: "How's the project going?", time: "Tuesday", unread: 0, online: true, avatar: "👦", pinned: false, muted: false, group: false },
-    { id: 5, name: "Diana Prince", lastMessage: "Sent a photo", time: "Monday", unread: 1, online: false, avatar: "👸", pinned: false, muted: false, group: false },
+    { id: 1, chatId: 1, name: "Alice Smith", lastMessage: "See you tomorrow!", time: "10:30 AM", unread: 2, online: true, avatar: "👩‍🦰", pinned: true, muted: false, group: false },
+    { id: 2, chatId: 1,name: "Bob Johnson", lastMessage: "Thanks for the info!", time: "Yesterday", unread: 0, online: false, avatar: "👨‍🦲", pinned: false, muted: true, group: false },
+    { id: 3,chatId: 1, name: "Work Group", lastMessage: "Meeting at 3 PM", time: "Yesterday", unread: 5, online: true, avatar: "👥", pinned: true, muted: false, group: true },
+    { id: 4, chatId: 1,name: "Charlie Brown", lastMessage: "How's the project going?", time: "Tuesday", unread: 0, online: true, avatar: "👦", pinned: false, muted: false, group: false },
+    { id: 5,chatId: 1, name: "Diana Prince", lastMessage: "Sent a photo", time: "Monday", unread: 1, online: false, avatar: "👸", pinned: false, muted: false, group: false },
   ]);
+
+
+  useEffect(()=>{
+
+    const data = async () =>{
+      const userId = localStorage.getItem('user_id')
+      const a = await Api.getChats(userId)
+      console.log(a)
+      setChats(a)
+    }
+
+    data()
+  },[])
+
 
   const navigate = useNavigate()
 
@@ -55,9 +70,9 @@ const ChatHome: React.FC = () => {
     setActiveCategory(tabId);
   };
 
-  const handleChatItemClick = (chatId: number) => {
+  const handleChatItemClick = (userId: number, chatId: any) => {
     // console.log(`Chat item clicked: ${chatId}`);
-    navigate('/c/' + chatId);
+    navigate('/c/' + userId + '/' + chatId);
   };
 
   const handleNewChat = () => {
@@ -109,7 +124,7 @@ const ChatHome: React.FC = () => {
 
       <div className="flex-grow overflow-y-auto">
         {sortedChats.map((chat) => (
-          <div key={chat.id} onClick={() => handleChatItemClick(chat.id)}>
+          <div key={chat.id} onClick={() => handleChatItemClick(chat.id, chat?.chatId)}>
             <ChatItem chat={chat} />
           </div>
         ))}
