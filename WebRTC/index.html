@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebRTC Audio Streaming</title>
+</head>
+<body>
+  <h1>WebRTC Audio Streaming Example</h1>
+  <audio id="remoteAudio" autoplay></audio>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io(); // Connect to the signaling server
+    let localStream;
+    let peerConnection;
+    const remoteAudio = document.getElementById('remoteAudio');
+
+    const configuration = {
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' } // Use Google's STUN server
+      ]
+    };
+
+    // Get user audio
+    async function getLocalAudio() {
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch (error) {
+        console.error('Error accessing audio devices:', error);
+      }
+    }
+
+    // Handle signaling events
+    socket.on('offer', async (data) => {
+      createPeerConnection();
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+
+      socket.emit('answer', { answer });
+    });
+
+    socket.on('answer', async (data) => {
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+    });
+
+    socket.on('ice-candidate', (data) => {
+      if (data.candidate) {
+        peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+      }
+    });
+
+    // Create WebRTC peer connection
+    function createPeerConnection() {
+      if (!peerConnection) {
+        peerConnection = new RTCPeerConnection(configuration);
+
+        // Add local stream to the connection
+        if (localStream) {
+          localStream.getTracks().forEach((track) => {
+            peerConnection.addTrack(track, localStream);
+          });
+        }
+
+        // Handle remote stream
+        peerConnection.ontrack = (event) => {
+          remoteAudio.srcObject = event.streams[0];
+        };
+
+        // Handle ICE candidates
+        peerConnection.onicecandidate = (event) => {
+          if (event.candidate) {
+            socket.emit('ice-candidate', { candidate: event.candidate });
+          }
+        };
+      }
+    }
+
+    // Start connection process
+    async function start() {
+      await getLocalAudio();
+      createPeerConnection();
+
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+
+      socket.emit('offer', { offer });
+    }
+
+    start();
+  </script>
+</body>
+</html>

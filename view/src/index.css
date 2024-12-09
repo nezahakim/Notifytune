@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.toggle-checkbox:checked {
+  @apply right-0 border-green-400;
+}
+.toggle-checkbox:checked + .toggle-label {
+  @apply bg-green-400;
+}
+
+@keyframes pinned-highlight {
+  0% {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.pinned-animation {
+  animation: pinned-highlight 1s ease-out;
+}
