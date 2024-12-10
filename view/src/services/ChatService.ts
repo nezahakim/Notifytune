@@ -13,13 +13,23 @@ interface SocketResponse {
   messageId: any;
 }
 
+interface Participant {
+  roomId: string;
+  userId: string;
+  role:[];
+  isOnStage: Boolean;
+  isSpeaking:Boolean;
+}
+// const ApiIO = 'http://localhost:3000'
+const ApiIO = 'https://reimagined-eureka-r4g64xprrrrpf4g6-3000.app.github.dev';
+
 class ChatServices {
   private static instance: ChatServices;
   private socket: Socket;
   private messageCallbacks: ((data: any) => void)[] = [];
 
   private constructor() {
-    this.socket = io('http://localhost:3000');
+    this.socket = io(ApiIO);
     this.initializeSocket();
   }
 
@@ -63,18 +73,16 @@ class ChatServices {
 
   }
 
-  sendMessage(chatId: string, userId: string, message: string): Promise<SocketResponse> {
+  sendMessage(data: any): Promise<SocketResponse> {
     return new Promise((resolve) => {
-      const data: MessageData = { chatId, userId, message };
       this.socket.emit('send-message', data, (response: SocketResponse) => {
         resolve(response);
       });
     });
   }
 
-  joinRoom(roomId: string, userId: string): Promise<SocketResponse> {
+  joinRoom(data: any): Promise<SocketResponse> {
     return new Promise((resolve) => {
-      const data = { roomId, userId };
       this.socket.emit('join-room', data, (response: SocketResponse) => {
         resolve(response);
       });
@@ -88,25 +96,33 @@ class ChatServices {
     };
   }
 
-  deleteMessage(messageId: number, roomId: string, userId: string): Promise<SocketResponse> {
+  deleteMessage(data: any): Promise<SocketResponse> {
     return new Promise((resolve) => {
-      this.socket.emit('delete-message', { messageId, roomId, userId }, (response: any) => {
+      this.socket.emit('delete-message',data, (response: any) => {
         resolve(response);
       });
     });
   }
 
-  pinMessage(messageId: number, roomId: string, userId: string): Promise<SocketResponse> {
+  pinMessage(data: any): Promise<SocketResponse> {
     return new Promise((resolve) => {
-      this.socket.emit('pin-message', { messageId, roomId, userId }, (response: any) => {
+      this.socket.emit('pin-message', data, (response: any) => {
         resolve(response);
       });
     });
   }
 
-  leaveRoom(roomId: string, userId: string) {
+  leaveRoom(data: any) {
     return new Promise((resolve) => {
-      this.socket.emit('leave-room', { roomId, userId }, (response: any) => {
+      this.socket.emit('leave-room', data, (response: any) => {
+        resolve(response);
+      });
+    });
+  }
+
+  getRoomParticipants(data: any): Promise<Participant[]> {
+    return new Promise((resolve) => {
+      this.socket.emit('get-room-participants', data, (response: any) => {
         resolve(response);
       });
     });

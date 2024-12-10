@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = 'https://reimagined-eureka-r4g64xprrrrpf4g6-3000.app.github.dev/api'
+// const API_BASE_URL = "http://localhost:3000/api";
 
 class Api {
   axios: any;
@@ -50,6 +51,7 @@ class Api {
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user_id", response.data.user.userId);
+      console.log('success')
     }
     return response.data;
   }

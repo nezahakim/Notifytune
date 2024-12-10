@@ -9,13 +9,28 @@ const ChatSchema = new mongoose.Schema({
 });
 
 // Define the Message schema
+// const MessageSchema = new mongoose.Schema({
+//    chatId: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat', required: true },
+//    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+//    message: { type: String, required: true },
+//    pinned: { type: Boolean, default: false },
+//    createdAt: { type: Date, default: Date.now }
+// });
+
 const MessageSchema = new mongoose.Schema({
    chatId: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat', required: true },
    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
    message: { type: String, required: true },
    pinned: { type: Boolean, default: false },
+   deleted: { type: Boolean, default: false },
+   messageType: {
+     type: String,
+     enum: ['text', 'audio', 'video'],
+     default: 'text'
+   },
    createdAt: { type: Date, default: Date.now }
 });
+
 
 
 const Chat = mongoose.model("Chat", ChatSchema);

@@ -36,7 +36,7 @@ const SignIn: React.FC = () => {
         e.preventDefault();
 
         if(userData){
-            const a = await Api.login(userData)
+            const a = await login(userData)
             if(a.status){
                navigate('/home')
             }else{
